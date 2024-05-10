@@ -20,7 +20,7 @@ const GoalItem = ({goal, handleEdit}) => {
         <>
           <div className="goal">
             <div>
-              <img src="https://images.unsplash.com/photo-1715002383611-63488b956401?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="eagle" />
+            <img src="https://images.unsplash.com/photo-1715271040278-9c6fcd6e669b?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Goal" />
             </div>
             <div className="goal-content">
               <h2>{goal.text}</h2>

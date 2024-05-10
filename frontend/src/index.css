@@ -113,6 +113,25 @@ img {
   height: 50px;
 }
 
+.upload-image{
+  border: black 2px solid;
+  background: white;
+  color: black;
+  font-weight: 400;
+  cursor: pointer;
+  box-shadow: 3px 3px 5px 5px rgba(0, 0, 0, 0.2);
+  width: fit-content;
+  padding: 5px;
+  border-radius: 20px;
+  transition: transform 1s ease-in-out;
+  margin-bottom: 8px;
+}
+
+.upload-image:hover{
+  transform: translateY(-5%) scale(1.05);
+  transition: transform 1s ease-in-out;
+}
+
 .container {
   width: 100%;
   max-width: 960px;
@@ -179,7 +198,7 @@ img {
 }
 
 .form-group {
-  margin-bottom: 10px;
+  margin-bottom: 3px;
 }
 
 .form-group input,

@@ -19,7 +19,7 @@ const Dashboard = () => {
   return  <>
     <section className="heading">
       <h1>Welcome {userInfo && userInfo.name}</h1>
-      <p>Goals Dashboard</p>
+      <p>TO-DO Dashboard</p>
       <GoalForm/>
     </section>
   </>

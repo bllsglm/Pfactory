@@ -25,13 +25,26 @@ const getGoals = asyncHandler(async(req,res) => {
 // @route  POST /api/goals
 // @access Private
 const setGoal = asyncHandler(async(req,res) => {
+  console.log(req.body);
   if(!req.body.text){
     res.status(400)
     throw new Error('Please add a text field')
   }else{
-    const goal = await Goal.create({user: req.user._id,text : req.body.text, tags : req.body.tags})
-    res.status(200).json(goal)
-  }
+    let imagePath;
+    if (req.file && req.file.path) {
+      console.log(req.file);
+      imagePath = req.file.path;
+    }
+
+    const goal = await Goal.create({
+      user: req.user._id,
+      text: req.body.text,
+      tags: req.body.tags,
+      image: req.body.image  
+    });
+
+    res.status(200).json(goal);
+    }
 })
 
 // @desc Update goals

@@ -12,7 +12,7 @@ const SearchBox = () => {
       <div style={{ display: "flex", alignItems: "center" }}>
         <input
           type="text"
-          placeholder="Search Goals.."
+          placeholder="Search to-do's by tags or text.."
           value={keyword}
           name="q"
           onChange={(e) => setKeyword(e.target.value)}

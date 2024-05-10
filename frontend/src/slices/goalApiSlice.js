@@ -1,5 +1,8 @@
 import { apiSlice } from "./apiSlice";
 import { GOALS_URL } from "../constants";
+import { UPLOAD_URL } from "../constants";
+
+
 
 export const goalApiSlice = apiSlice.injectEndpoints({
   endpoints : builder => ({
@@ -27,6 +30,13 @@ export const goalApiSlice = apiSlice.injectEndpoints({
         body : data
       })
     }),
+    uploadGoalImage : builder.mutation({
+      query : (data) => ({
+        url : `${UPLOAD_URL}`,
+        method : 'POST',
+        body :data,
+      })
+    }),
     deleteGoal : builder.mutation({
       query : (goalId) => ({
         url :`${GOALS_URL}/${goalId}`,
@@ -38,4 +48,4 @@ export const goalApiSlice = apiSlice.injectEndpoints({
   })
 })
 
-export const {useDeleteGoalMutation,useGetGoalsQuery,useSetGoalsMutation,useUpdateGoalMutation} = goalApiSlice
+export const {useDeleteGoalMutation,useGetGoalsQuery,useSetGoalsMutation,useUpdateGoalMutation, useUploadGoalImageMutation} = goalApiSlice

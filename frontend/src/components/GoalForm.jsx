@@ -1,6 +1,6 @@
 import { useState,useEffect } from "react"
 import {useSelector, useDispatch } from 'react-redux';
-import {useGetGoalsQuery ,useSetGoalsMutation, useUpdateGoalMutation} from '../slices/goalApiSlice';
+import {useGetGoalsQuery ,useSetGoalsMutation, useUpdateGoalMutation, useUploadGoalImageMutation} from '../slices/goalApiSlice';
 import { toast } from 'react-toastify';
 import Loader from './Loader';
 import { settingGoals, resetGoals } from "../slices/goalSlice";
@@ -14,9 +14,10 @@ const GoalForm = () => {
   const [tags, setTags] = useState('');
   const [editButton, setEditButton] = useState(false)
   const [currentGoal, setCurrentGoal] = useState({})
+  const [image, setImage] = useState('');
+
   const dispatch = useDispatch();
   const { keyword } = useParams();
-  console.log(keyword);
 
 
   const { userInfo } = useSelector((state) => state.auth)
@@ -25,6 +26,7 @@ const GoalForm = () => {
   const [setGoalApi, {isLoading :loaderSetting } ] = useSetGoalsMutation()
   const [updateGoal,{isLoading: loaderUpdate}] = useUpdateGoalMutation()
   const {data : goalList, isLoading : loadingGetGoal , refetch} = useGetGoalsQuery({keyword});
+  const [uploadImage, {isLoading : loadingUpload}] = useUploadGoalImageMutation()
 
 
   const EditHandler = (goal) => {
@@ -37,14 +39,14 @@ const GoalForm = () => {
   const onSubmit = async(e) => {
 
     if(editButton === true) {
-      await updateGoal({...currentGoal, text, tags})
+      await updateGoal({...currentGoal, text, tags, image})
       setEditButton(false)
       toast.success("Goal edited")
     }else{
 
       try {
         e.preventDefault()
-        const res = await setGoalApi({text, tags:tags.split(",")}).unwrap();
+        const res = await setGoalApi({text, tags:tags.split(","), image}).unwrap();
         dispatch(settingGoals({...res}))
         refetch()
         toast.success('Goals set, success ahead.')
@@ -73,11 +75,28 @@ const GoalForm = () => {
    return <Loader/>
   }
 
+
+  const uploadFileHandler = async(e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const formData = new FormData();
+      formData.append('image', e.target.files[0]);
+      try {
+        const res = await uploadImage(formData).unwrap();
+        console.log("res is",res);
+        toast.success(res.message);
+        console.log("res.image is",res.image);
+        setImage(res.image)
+      } catch (err) {
+        toast.error(err?.data?.message || err.error)
+      }
+    }
+  }
+  
+
   return (<>
     <section className="form">
       <form onSubmit={onSubmit}>
         <div className="form-group">
-          <label htmlFor="text">Goal</label>
           <input 
           type="text" 
           name="text"
@@ -90,9 +109,18 @@ const GoalForm = () => {
           value={tags} 
           name="tags"
           id="tags"
-          placeholder="Add some Tags for your goals.."
+          placeholder="Add some Tags for your to-dos.."
           onChange={(e) => setTags(e.target.value)} />
+           
         </div>
+        <input 
+          className="upload-image"
+          type="file" 
+          accept="image/*" 
+          name="image" 
+          id="image" 
+          onChange={uploadFileHandler} 
+        />
         <div className="form-group">
           <button className="btn btn-block" type="submit">{editButton ? "Edit Goal": "Add Goal"}</button>
           {loaderSetting && <Loader/>}
