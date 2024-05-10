@@ -113,6 +113,7 @@ const GoalForm = () => {
           onChange={(e) => setTags(e.target.value)} />
            
         </div>
+        <p style={{fontSize:"20px"}}>Upload Image</p>
         <input 
           className="upload-image"
           type="file" 

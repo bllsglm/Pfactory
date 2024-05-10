@@ -12,7 +12,7 @@ const goalSchema = new mongoose.Schema({
     },
     image : {
       type : String,
-      required : true
+      required : [true, 'Please add an image']
     },
     file: String,  
     tags: [{ type: String }],
