@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 
 const GoalForm = () => {
   const [text,setText] = useState('');
+  const [tags, setTags] = useState('');
   const [editButton, setEditButton] = useState(false)
   const [currentGoal, setCurrentGoal] = useState({})
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ const GoalForm = () => {
 
   const EditHandler = (goal) => {
     setText(goal.text)
+    setTags(goal.tags)
     setEditButton(true)
     setCurrentGoal(goal)
   }
@@ -35,14 +37,14 @@ const GoalForm = () => {
   const onSubmit = async(e) => {
 
     if(editButton === true) {
-      await updateGoal({...currentGoal, text})
+      await updateGoal({...currentGoal, text, tags})
       setEditButton(false)
       toast.success("Goal edited")
     }else{
 
       try {
         e.preventDefault()
-        const res = await setGoalApi({text}).unwrap();
+        const res = await setGoalApi({text, tags:tags.split(",")}).unwrap();
         dispatch(settingGoals({...res}))
         refetch()
         toast.success('Goals set, success ahead.')
@@ -83,6 +85,13 @@ const GoalForm = () => {
           value={text} 
           placeholder="Add a Goal.."
           onChange={(e)=>setText(e.target.value)}/>
+          <input 
+          type="text" 
+          value={tags} 
+          name="tags"
+          id="tags"
+          placeholder="Add some Tags for your goals.."
+          onChange={(e) => setTags(e.target.value)} />
         </div>
         <div className="form-group">
           <button className="btn btn-block" type="submit">{editButton ? "Edit Goal": "Add Goal"}</button>

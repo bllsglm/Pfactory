@@ -24,6 +24,7 @@ const GoalItem = ({goal, handleEdit}) => {
             </div>
             <div className="goal-content">
               <h2>{goal.text}</h2>
+              {goal.tags.length > 0 && <h3>Tags : {goal.tags}</h3>}
               <div className="goal-buttons">
                 <button 
                   className="del-button"

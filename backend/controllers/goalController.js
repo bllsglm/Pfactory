@@ -6,11 +6,18 @@ import User from "../models/userModel.js";
 // @route  GET /api/goals
 // @access Private
 const getGoals = asyncHandler(async(req,res) => {
-  const keyword = req.query.keyword ? { text: { $regex: req.query.keyword, $options: 'i' } } : {};
-  console.log(
-    {...req.query}
-  );
-  const goals = await Goal.find({ user: req.user._id, ...keyword });
+  let query = { user: req.user._id };
+
+  if (req.query.keyword) {
+
+    query.$or = [
+      { text: { $regex: req.query.keyword, $options: 'i' } }, 
+      { tags: { $regex: req.query.keyword, $options: 'i' } }   
+    ];
+  }
+
+  const goals = await Goal.find(query);
+  
   res.status(200).json(goals);
 });
 
@@ -22,7 +29,7 @@ const setGoal = asyncHandler(async(req,res) => {
     res.status(400)
     throw new Error('Please add a text field')
   }else{
-    const goal = await Goal.create({user: req.user._id,text : req.body.text})
+    const goal = await Goal.create({user: req.user._id,text : req.body.text, tags : req.body.tags})
     res.status(200).json(goal)
   }
 })
